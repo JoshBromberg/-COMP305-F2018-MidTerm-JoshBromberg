@@ -166,7 +166,7 @@ public class GameController : MonoBehaviour
         }
 
         Lives = 5;
-        Score = 499;
+        Score = 0;
 
 
         if ((activeSoundClip != SoundClip.NONE) && (activeSoundClip != SoundClip.NUM_OF_CLIPS))
