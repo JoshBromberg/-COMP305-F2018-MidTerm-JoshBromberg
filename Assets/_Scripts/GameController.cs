@@ -54,6 +54,7 @@ public class GameController : MonoBehaviour
             _lives = value;
             if(_lives < 1)
             {
+                #region Unload saved objects
                 foreach (GameObject g in GameObject.FindGameObjectsWithTag("Ocean"))
                 {
                     Destroy(g);
@@ -62,8 +63,9 @@ public class GameController : MonoBehaviour
                 Destroy(GameObject.FindGameObjectWithTag("Canvas"));
                 Destroy(GameObject.FindGameObjectWithTag("EventSystem"));
                 _level = 0;
+                #endregion
                 SceneManager.LoadScene("End");
-                Destroy(gameObject);
+                Destroy(gameObject); //Get rid of the extra GameController
             }
             else
             {
