@@ -48,15 +48,15 @@ public class PlayerController : MonoBehaviour
             _yaySound = gameController.audioSources[(int)SoundClip.YAY];
         }
         #endregion
+        int axisSetter = gameController.Level == 0 ? 0 : 1; //Grabs the right axis for the player to use
+        int speedModulator = gameController.Level % 2 == 1 ? -1 : 1; //Inverse speed when on even levels (odd in code)
 
-        int speedModulator = gameController.Level % 2 == 1 ? -1 : 1; //Inverse speed when on sideways levels
-
-        if (Input.GetAxis(directionString[gameController.Level%2]) > 0.0f)
+        if (Input.GetAxis(directionString[axisSetter]) > 0.0f)
         {
             newPosition += new Vector2(speed.max*speedModulator, 0.0f);
         }
 
-        if (Input.GetAxis(directionString[gameController.Level % 2]) < 0.0f)
+        if (Input.GetAxis(directionString[axisSetter]) < 0.0f)
         {
             newPosition += new Vector2(speed.min*speedModulator, 0.0f);
         }

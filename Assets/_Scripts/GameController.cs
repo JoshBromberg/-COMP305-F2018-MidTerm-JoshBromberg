@@ -195,6 +195,16 @@ public class GameController : MonoBehaviour
 
     public void OnRestartButtonClick()
     {
+        foreach (GameObject g in GameObject.FindGameObjectsWithTag("Ocean"))
+        {
+            Destroy(g);
+        }
+        Destroy(gameObject);
+        Destroy(GameObject.FindGameObjectWithTag("Canvas"));
+        Destroy(GameObject.FindGameObjectWithTag("EventSystem"));
         SceneManager.LoadScene("Main");
+        _level = 0;
+        Lives = 5;
+        Destroy(gameObject);
     }
 }
