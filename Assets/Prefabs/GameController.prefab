@@ -336,7 +336,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cloud: {fileID: 3054146487104416547, guid: dc3d9b292f9ab354384fe64432524b61, type: 3}
   island: {fileID: 4066947924111177519, guid: b5c574aad07e45b4ca27759fb28d487b, type: 3}
-  numberOfClouds: 3
+  numberOfClouds: 1
   clouds: []
   activeSoundClip: 0
   audioSources:
@@ -347,6 +347,8 @@ MonoBehaviour:
   _score: 0
   livesLabel: {fileID: 0}
   scoreLabel: {fileID: 0}
+  highScoreLabel: {fileID: 0}
+  highScore: {fileID: 0}
   startLabel: {fileID: 0}
   startButton: {fileID: 0}
   endLabel: {fileID: 0}

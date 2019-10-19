@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-
+//Edited by: Josh Bromberg: Student Number 301063558
 public class GameController : MonoBehaviour
 {
     [Header("Scene Game Objects")]
@@ -34,6 +34,12 @@ public class GameController : MonoBehaviour
     public GameObject startButton;
     public GameObject endLabel;
     public GameObject restartButton;
+
+    #region Level Related Variables
+    private int[] _scoreThresholds = { 500, 1000 };
+    private int _level = 0;
+    public int Level { get { return _level; } }
+    #endregion
 
     // public properties
     public int Lives
@@ -77,6 +83,21 @@ public class GameController : MonoBehaviour
                 highScore.GetComponent<HighScore>().score = _score;
             }
             scoreLabel.text = "Score: " + _score.ToString();
+
+            #region Added Code
+            if (_score >= _scoreThresholds[_level])
+            {
+                ++_level;
+                foreach (GameObject g in GameObject.FindGameObjectsWithTag("Ocean"))
+                {
+                    DontDestroyOnLoad(g);
+                }
+                DontDestroyOnLoad(gameObject);
+                DontDestroyOnLoad(GameObject.FindGameObjectWithTag("Canvas"));
+                DontDestroyOnLoad(GameObject.FindGameObjectWithTag("EventSystem"));
+                SceneManager.LoadScene("Level"+(_level+1));
+            }
+            #endregion
         }
     }
 
@@ -130,7 +151,7 @@ public class GameController : MonoBehaviour
         }
 
         Lives = 5;
-        Score = 0;
+        Score = 499;
 
 
         if ((activeSoundClip != SoundClip.NONE) && (activeSoundClip != SoundClip.NUM_OF_CLIPS))
@@ -144,6 +165,11 @@ public class GameController : MonoBehaviour
 
 
 
+        CreateClouds(numberOfClouds);//Create Clouds
+    }
+
+    private void CreateClouds(int numberOfClouds)
+    {
         // creates an empty container (list) of type GameObject
         clouds = new List<GameObject>();
 
@@ -154,7 +180,6 @@ public class GameController : MonoBehaviour
 
         Instantiate(island);
     }
-
     // Update is called once per frame
     void Update()
     {

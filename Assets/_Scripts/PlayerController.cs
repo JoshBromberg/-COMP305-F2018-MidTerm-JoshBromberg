@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Util;
-
+//Edited by: Josh Bromberg: Student Number 301063558
 public class PlayerController : MonoBehaviour
 {
     public Speed speed;
@@ -14,11 +14,18 @@ public class PlayerController : MonoBehaviour
     private AudioSource _thunderSound;
     private AudioSource _yaySound;
 
+    private string[] directionString = { "Horizontal", "Vertical" }; //String for changing direction
+    private bool getFinalController; //bool to see if the final gameController has been chosen
+
     // Start is called before the first frame update
     void Start()
     {
-        _thunderSound = gameController.audioSources[(int)SoundClip.THUNDER];
-        _yaySound = gameController.audioSources[(int)SoundClip.YAY];
+        try
+        {
+            _thunderSound = gameController.audioSources[(int)SoundClip.THUNDER];
+            _yaySound = gameController.audioSources[(int)SoundClip.YAY];
+        }
+        catch (System.NullReferenceException) { }
     }
 
     // Update is called once per frame
@@ -32,14 +39,26 @@ public class PlayerController : MonoBehaviour
     {
         Vector2 newPosition = transform.position;
 
-        if(Input.GetAxis("Horizontal") > 0.0f)
+        #region Set Game Controller
+        if (getFinalController == false)
         {
-            newPosition += new Vector2(speed.max, 0.0f);
+            gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+            getFinalController = true;
+            _thunderSound = gameController.audioSources[(int)SoundClip.THUNDER];
+            _yaySound = gameController.audioSources[(int)SoundClip.YAY];
+        }
+        #endregion
+
+        int speedModulator = gameController.Level % 2 == 1 ? -1 : 1; //Inverse speed when on sideways levels
+
+        if (Input.GetAxis(directionString[gameController.Level%2]) > 0.0f)
+        {
+            newPosition += new Vector2(speed.max*speedModulator, 0.0f);
         }
 
-        if (Input.GetAxis("Horizontal") < 0.0f)
+        if (Input.GetAxis(directionString[gameController.Level % 2]) < 0.0f)
         {
-            newPosition += new Vector2(speed.min, 0.0f);
+            newPosition += new Vector2(speed.min*speedModulator, 0.0f);
         }
 
         transform.position = newPosition;
