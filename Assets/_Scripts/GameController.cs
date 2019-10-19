@@ -54,8 +54,16 @@ public class GameController : MonoBehaviour
             _lives = value;
             if(_lives < 1)
             {
-                
+                foreach (GameObject g in GameObject.FindGameObjectsWithTag("Ocean"))
+                {
+                    Destroy(g);
+                }
+                Destroy(gameObject);
+                Destroy(GameObject.FindGameObjectWithTag("Canvas"));
+                Destroy(GameObject.FindGameObjectWithTag("EventSystem"));
+                _level = 0;
                 SceneManager.LoadScene("End");
+                Destroy(gameObject);
             }
             else
             {
@@ -85,17 +93,22 @@ public class GameController : MonoBehaviour
             scoreLabel.text = "Score: " + _score.ToString();
 
             #region Added Code
-            if (_score >= _scoreThresholds[_level])
+            if (Level < 2)
             {
-                ++_level;
-                foreach (GameObject g in GameObject.FindGameObjectsWithTag("Ocean"))
+                if (_score >= _scoreThresholds[_level])
                 {
-                    DontDestroyOnLoad(g);
+                    ++_level;
+                    #region Save Objects
+                    foreach (GameObject g in GameObject.FindGameObjectsWithTag("Ocean"))
+                    {
+                        DontDestroyOnLoad(g);
+                    }
+                    DontDestroyOnLoad(gameObject);
+                    DontDestroyOnLoad(GameObject.FindGameObjectWithTag("Canvas"));
+                    DontDestroyOnLoad(GameObject.FindGameObjectWithTag("EventSystem"));
+                    #endregion
+                    SceneManager.LoadScene("Level" + (_level + 1));
                 }
-                DontDestroyOnLoad(gameObject);
-                DontDestroyOnLoad(GameObject.FindGameObjectWithTag("Canvas"));
-                DontDestroyOnLoad(GameObject.FindGameObjectWithTag("EventSystem"));
-                SceneManager.LoadScene("Level"+(_level+1));
             }
             #endregion
         }
@@ -195,16 +208,6 @@ public class GameController : MonoBehaviour
 
     public void OnRestartButtonClick()
     {
-        foreach (GameObject g in GameObject.FindGameObjectsWithTag("Ocean"))
-        {
-            Destroy(g);
-        }
-        Destroy(gameObject);
-        Destroy(GameObject.FindGameObjectWithTag("Canvas"));
-        Destroy(GameObject.FindGameObjectWithTag("EventSystem"));
         SceneManager.LoadScene("Main");
-        _level = 0;
-        Lives = 5;
-        Destroy(gameObject);
     }
 }
